@@ -4,20 +4,20 @@ class Crypto
   end
 
   def encode(str)
-    perform str do |sentence|
+    perform str do |sequence|
       @key.map do |i|
-        sentence[i - 1]
+        sequence[i - 1]
       end
     end
   end
 
   def decode(str)
-    perform str do |sentence|
-      sentence = normalize_decoded sentence
+    perform str do |sequence|
+      sequence = normalize_encoded sequence
 
       tmp = []
       @key.each_with_index do |k, i|
-        tmp[k - 1] = sentence[i]
+        tmp[k - 1] = sequence[i]
       end
       tmp
     end
@@ -25,7 +25,7 @@ class Crypto
 
   private
 
-  # TODO: SMELL CODE: Extract to "Validator" module/class
+  # TODO: Extract to "Validator" module/class
   def validate(key)
     key = key.to_str
     key = key.split('').map(&:to_i)
@@ -37,25 +37,27 @@ class Crypto
 
     return key
   rescue NoMethodError
-    raise ArgumentError, 'Key must be a string'
+    raise ArgumentError, 'Key must be a string' # or quack like a string
   end
 
   def perform(str)
     result = []
-    str.split('').each_slice(@key.size) do |sentence|
-      result << yield(sentence)
+    str.split('').each_slice(@key.size) do |sequence|
+      result << yield(sequence)
     end
     result.flatten.compact.join
   end
 
-  # Fill sentence with nil when key value if greater than sentence length
-  def normalize_decoded(sentence)
+  # Fill sequence with nil when key value is greater than sequence length
+  def normalize_encoded(sequence)
+    return sequence if @key.size == sequence.size
+
     i = 0
-    sentence = @key.map do |k|
-      if k > sentence.size
+    sequence = @key.map do |k|
+      if k > sequence.size
         nil
       else
-        t = sentence[i]
+        t = sequence[i]
         i += 1
         t
       end

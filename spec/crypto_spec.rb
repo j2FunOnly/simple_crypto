@@ -10,7 +10,7 @@ RSpec.describe Crypto do
     let(:key) { '312654' }
 
     describe '#encode' do
-      it 'return ecoded string' do
+      it 'return encoded string' do
         expect(subject.encode decoded).to eq encoded
       end
     end
@@ -23,10 +23,8 @@ RSpec.describe Crypto do
   end
 
   describe 'encode and decode string with random key' do
-    let(:decoded) { 'Lorem ipsum dolor sit amet' }
-    let(:encoded) { subject.encode decoded }
-
     it 'successfully' do
+      decoded = 'Lorem ipsum dolor sit amet'
       (2..9).each do |i|
         crypto = Crypto.new (1..i).to_a.shuffle.join
         encoded = crypto.encode decoded
