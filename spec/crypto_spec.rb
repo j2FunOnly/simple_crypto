@@ -23,12 +23,41 @@ RSpec.describe Crypto do
   end
 
   describe 'encode and decode string with random key' do
-    let(:key) { (1..rand(1..9)).to_a.shuffle.join }
     let(:decoded) { 'Lorem ipsum dolor sit amet' }
     let(:encoded) { subject.encode decoded }
 
     it 'successfully' do
-      expect(subject.decode encoded).to eq decoded
+      (2..9).each do |i|
+        crypto = Crypto.new (1..i).to_a.shuffle.join
+        encoded = crypto.encode decoded
+        expect(crypto.decode encoded).to eq decoded
+      end
+    end
+  end
+
+  describe 'key' do
+    it 'must be a string' do
+      expect do
+        described_class.new 123
+      end.to raise_error ArgumentError, 'Key must be a string'
+    end
+
+    it 'must be sequental of unique numbers' do
+      expect do
+        described_class.new '11'
+      end.to raise_error ArgumentError, 'Key values must be unique'
+    end
+
+    it 'length must be between 2 and 9' do
+      expect do
+        described_class.new '1234567890'
+      end.to raise_error ArgumentError, 'Key length must be between 2 and 9'
+    end
+
+    it 'values must be of 123456789' do
+      expect do
+        described_class.new '0123'
+      end.to raise_error ArgumentError, 'Key values must be of 123456789'
     end
   end
 end
