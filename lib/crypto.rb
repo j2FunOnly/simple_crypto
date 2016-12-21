@@ -48,7 +48,7 @@ class Crypto
     result.flatten.compact.join
   end
 
-  # fill sentence with nil when key value if greater then sentence length
+  # Fill sentence with nil when key value if greater than sentence length
   def normalize_decoded(sentence)
     i = 0
     sentence = @key.map do |k|
