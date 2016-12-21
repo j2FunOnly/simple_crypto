@@ -24,7 +24,7 @@ class Crypto
   # TODO: Extract to "Validator" module/class
   def validate(key)
     key = key.to_s
-    key = key.split('').map(&:to_i)
+    key = key.chars.map(&:to_i)
 
     error = 'Key values must be of 123456789' if key.sort != (1..key.size).to_a
     error = 'Key values must be unique' if key.uniq.length != key.length
@@ -35,7 +35,7 @@ class Crypto
   end
 
   def perform(str)
-    str.split('')
+    str.chars
       .each_slice(@key.size)
       .map { |sequence| yield sequence }
       .join
