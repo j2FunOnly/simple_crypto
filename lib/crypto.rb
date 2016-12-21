@@ -5,20 +5,16 @@ class Crypto
 
   def encode(str)
     perform str do |sequence|
-      @key.map do |i|
-        sequence[i - 1]
-      end
+      @key.map { |i| sequence[i - 1] }
     end
   end
 
   def decode(str)
     perform str do |sequence|
-      sequence = normalize_encoded sequence
+      normalize_encoded! sequence
 
-      tmp = []
-      @key.each_with_index do |k, i|
-        tmp[k - 1] = sequence[i]
-      end
+      tmp = Array.new @key.size
+      @key.each_with_index { |k, i| tmp[k - 1] = sequence[i] }
       tmp
     end
   end
@@ -39,26 +35,19 @@ class Crypto
   end
 
   def perform(str)
-    result = []
-    str.split('').each_slice(@key.size) do |sequence|
-      result << yield(sequence)
-    end
-    result.join
+    str.split('')
+      .each_slice(@key.size)
+      .map { |sequence| yield sequence }
+      .join
   end
 
   # Fill sequence with nil when key value is greater than sequence length
-  def normalize_encoded(sequence)
-    return sequence if @key.size == sequence.size
+  def normalize_encoded!(sequence)
+    return if @key.size == sequence.size
 
-    i = 0
-    sequence = @key.map do |k|
-      if k > sequence.size
-        nil
-      else
-        t = sequence[i]
-        i += 1
-        t
-      end
+    encoded_size = sequence.size
+    @key.each_with_index do |k, i|
+      sequence.insert(i, nil) if k > encoded_size
     end
   end
 end
