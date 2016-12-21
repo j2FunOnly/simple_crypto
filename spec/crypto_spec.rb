@@ -48,7 +48,7 @@ RSpec.describe Crypto do
     it 'values must be in 123456789' do
       expect do
         described_class.new '0123'
-      end.to raise_error ArgumentError, 'Key values must be in 123456789'
+      end.to raise_error ArgumentError, 'Key values must be of 123456789'
     end
   end
 end
