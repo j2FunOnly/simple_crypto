@@ -1,5 +1,4 @@
 require 'crypto'
-require 'pry'
 
 RSpec.describe Crypto do
   subject { described_class.new key }
@@ -46,10 +45,10 @@ RSpec.describe Crypto do
       end.to raise_error ArgumentError, 'Key length must be between 2 and 9'
     end
 
-    it 'values must be of 123456789' do
+    it 'values must be in 123456789' do
       expect do
         described_class.new '0123'
-      end.to raise_error ArgumentError, 'Key values must be of 123456789'
+      end.to raise_error ArgumentError, 'Key values must be in 123456789'
     end
   end
 end
