@@ -27,7 +27,7 @@ class Crypto
 
   # TODO: Extract to "Validator" module/class
   def validate(key)
-    key = key.to_str
+    key = key.to_s
     key = key.split('').map(&:to_i)
 
     error = 'Key values must be of 123456789' if key.sort != (1..key.size).to_a
@@ -36,8 +36,6 @@ class Crypto
     raise ArgumentError, error if error
 
     return key
-  rescue NoMethodError
-    raise ArgumentError, 'Key must be a string' # or quack like a string
   end
 
   def perform(str)
@@ -45,7 +43,7 @@ class Crypto
     str.split('').each_slice(@key.size) do |sequence|
       result << yield(sequence)
     end
-    result.flatten.compact.join
+    result.join
   end
 
   # Fill sequence with nil when key value is greater than sequence length

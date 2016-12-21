@@ -34,12 +34,6 @@ RSpec.describe Crypto do
   end
 
   describe 'key' do
-    it 'must be a string' do
-      expect do
-        described_class.new 123
-      end.to raise_error ArgumentError, 'Key must be a string'
-    end
-
     it 'must be sequental of unique numbers' do
       expect do
         described_class.new '11'
