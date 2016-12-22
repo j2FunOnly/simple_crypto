@@ -1,7 +1,7 @@
 require 'benchmark'
 require_relative 'lib/crypto'
 
-i = 10_000
+i = 100_000
 c = Crypto.new (1..9).to_a.shuffle.join
 str = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'.freeze
 str_encoded = c.encode str

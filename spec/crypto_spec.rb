@@ -3,7 +3,7 @@ require 'crypto'
 RSpec.describe Crypto do
   subject { described_class.new key }
 
-  describe 'decode and encode phrase' do
+  describe 'decode and encode string' do
     let(:decoded) { 'Hello,_world!' }
     let(:encoded) { 'lHe,olo_wdlr!' }
     let(:key) { '312654' }
@@ -33,22 +33,22 @@ RSpec.describe Crypto do
   end
 
   describe 'key' do
-    it 'must be sequental of unique numbers' do
+    it 'should be sequence of unique numbers' do
       expect do
         described_class.new '11'
-      end.to raise_error ArgumentError, 'Key values must be unique'
+      end.to raise_error ArgumentError, 'Key values should be unique'
     end
 
-    it 'length must be between 2 and 9' do
+    it 'length should be between 2 and 9' do
       expect do
         described_class.new '1234567890'
-      end.to raise_error ArgumentError, 'Key length must be between 2 and 9'
+      end.to raise_error ArgumentError, 'Key length should be between 2 and 9'
     end
 
-    it 'values must be in 123456789' do
+    it 'values should be in 123456789' do
       expect do
         described_class.new '0123'
-      end.to raise_error ArgumentError, 'Key values must be of 123456789'
+      end.to raise_error ArgumentError, 'Key values should be in 123456789'
     end
   end
 end

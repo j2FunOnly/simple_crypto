@@ -11,7 +11,7 @@ class Crypto
 
   def decode(str)
     perform str do |sequence|
-      normalize_encoded! sequence
+      sequence = normalize_encoded sequence
 
       tmp = Array.new @key.size
       @key.each_with_index { |k, i| tmp[k - 1] = sequence[i] }
@@ -26,12 +26,12 @@ class Crypto
     key = key.to_s
     key = key.chars.map(&:to_i)
 
-    error = 'Key values must be of 123456789' if key.sort != (1..key.size).to_a
-    error = 'Key values must be unique' if key.uniq.length != key.length
-    error = 'Key length must be between 2 and 9' if key.size < 2 || key.size > 9
+    error = 'Key values should be in 123456789' if key.sort != (1..key.size).to_a
+    error = 'Key values should be unique' if key.uniq.length != key.length
+    error = 'Key length should be between 2 and 9' if key.size < 2 || key.size > 9
     raise ArgumentError, error if error
 
-    return key
+    key
   end
 
   def perform(str)
@@ -43,11 +43,18 @@ class Crypto
 
   # Fill sequence with nil when key value is greater than sequence length
   def normalize_encoded!(sequence)
-    return if @key.size == sequence.size
+    return sequence if @key.size == sequence.size
 
     encoded_size = sequence.size
     @key.each_with_index do |k, i|
       sequence.insert(i, nil) if k > encoded_size
     end
+
+    sequence
+  end
+
+  def normalize_encoded(sequence)
+    dup = sequence.dup
+    normalize_encoded! dup
   end
 end
