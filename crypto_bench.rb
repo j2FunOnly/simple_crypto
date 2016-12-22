@@ -1,21 +1,13 @@
-require 'benchmark'
+require 'benchmark/ips'
 require_relative 'lib/crypto'
 
-i = 100_000
-c = Crypto.new (1..9).to_a.shuffle.join
-str = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'.freeze
-str_encoded = c.encode str
+Benchmark.ips do |x|
+  crypto = Crypto.new (1..9).to_a.shuffle.join
+  str = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+  str_encoded = crypto.encode str
 
-# check if string correctly decoded
-puts c.decode str_encoded
-puts
+  x.report('Encode:') { crypto.encode str }
+  x.report('Decode:') { crypto.decode str_encoded }
 
-Benchmark.bm do |x|
-  x.report('Encode:') do
-    i.times { c.encode str }
-  end
-
-  x.report('Decode:') do
-    i.times { c.decode str_encoded }
-  end
+  x.compare!
 end
