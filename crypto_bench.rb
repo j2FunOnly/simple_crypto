@@ -6,8 +6,8 @@ Benchmark.ips do |x|
   str = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
   str_encoded = crypto.encode str
 
-  x.report('Encode:') { crypto.encode str }
-  x.report('Decode:') { crypto.decode str_encoded }
+  x.report('#decode:') { crypto.decode str_encoded }
+  x.report('#decode_ex:') { crypto.decode_ex str_encoded }
 
   x.compare!
 end
