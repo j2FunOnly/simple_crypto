@@ -19,17 +19,6 @@ class Crypto
     end
   end
 
-  def decode_ex(str)
-    perform str do |sequence|
-      sequence = normalize_encoded sequence
-
-      @key.each_with_index.reduce(Array.new) do |tmp, (k, i)|
-        tmp[k - 1] = sequence[i]
-        tmp
-      end
-    end
-  end
-
   private
 
   # TODO: Extract to "Validator" module/class
@@ -46,7 +35,7 @@ class Crypto
   end
 
   def perform(str)
-    str.chars
+    str.each_char
       .each_slice(@key.size)
       .map { |sequence| yield sequence }
       .join
